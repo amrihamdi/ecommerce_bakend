@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const Article=require("../models/article");
+
 const article = require('../models/article');
 // afficher la liste des articles.
 router.get('/', async (req, res, )=> {
@@ -64,17 +64,14 @@ router.put('/:articleId', async (req, res)=> {
         // Calculate the start and end indexes for the requested page
         const startIndex = (page - 1) * pageSize;
         const endIndex = page * pageSize;
-        const articles = await Article.find({}).populate("scategorieID").exec()
+      const articles=await article.find({designation:{$regex:filtre,$options:"i"}},null,{sort:{'_id':-1}}).populate("scategorieID").exec()
         // Slice the products array based on the indexes
         const paginatedProducts = articles.slice(startIndex, endIndex);
         // Calculate the total number of pages
         const totalPages = Math.ceil(articles.length / pageSize);
         // Send the paginated products and total pages as the API response
         res.json({ products: paginatedProducts, totalPages });
-        const article = await article.find({designation:{$regex:filtre,$options:"i"}},null,{sort:{'_id':-1}}).populate("scategorieID").exec();
+     
         });
-        
 
-
-        
     module.exports = router;
