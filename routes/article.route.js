@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const Article=require("../models/article")
+const Article=require("../models/article");
+const article = require('../models/article');
 // afficher la liste des articles.
 router.get('/', async (req, res, )=> {
 try {
@@ -70,7 +71,10 @@ router.put('/:articleId', async (req, res)=> {
         const totalPages = Math.ceil(articles.length / pageSize);
         // Send the paginated products and total pages as the API response
         res.json({ products: paginatedProducts, totalPages });
+        const article = await article.find({designation:{$regex:filtre,$options:"i"}},null,{sort:{'_id':-1}}).populate("scategorieID").exec();
         });
-        const articles=await article.find({designation:{$regex:filter,$options:"i"}},null,{sort:{'_id':-1}}).populate("scategorieID").exec
+        
+
+
         
     module.exports = router;
