@@ -22,6 +22,9 @@ process.exit(); });
 app.use('/api/categories', categorieRouter);
 app.use('/api/scategories',scategorieRouter);
 app.use('/api/articles', articleRouter);
+app.use(cors({
+    origin:'*'
+    }))
 app.listen(process.env.PORT)
 console.log("application run port  "+process.env.PORT  )
 module.exports =app;
