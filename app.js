@@ -4,6 +4,7 @@ const categorieRouter =require("./routes/categorie.route")
 const scategorieRouter=require("./routes/scategorie.route")
 const articleRouter =require("./routes/article.route")
 const cors=require("cors")
+const userRouter =require("./routes/user.route")
 
 app.use(cors())
 
@@ -22,6 +23,7 @@ process.exit(); });
 app.use('/api/categories', categorieRouter);
 app.use('/api/scategories',scategorieRouter);
 app.use('/api/articles', articleRouter);
+app.use('/api/users', userRouter);
 app.use(cors({
     origin:'*'
     }))

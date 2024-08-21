@@ -2,8 +2,9 @@ const express = require('express');
 const router = express.Router();
 // Créer une instance de categorie.
 const Categorie = require('../models/categorie');
+const { verifyToken } = require('../middeleware/verify-token');
 // afficher la liste des categories.
-router.get('/', async (req, res, )=> {
+router.get('/',verifyToken, async (req, res, )=> {
     try {
     const getcategorie = await Categorie.find({}, null ,{sort: {_id: -1}});
     res.status(200).json(getcategorie);

@@ -1,8 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const SCategorie=require("../models/scategorie")
+const SCategorie=require("../models/scategorie");
+const { verifyToken } = require('../middeleware/verify-token');
 // afficher la liste des s/categories.
-router.get('/', async (req, res, )=> {
+router.get('/',verifyToken, async (req, res, )=> {
 try {
 const scat = await SCategorie.find({}, null, {sort: {'_id': -
 1}}).populate("categorieID")

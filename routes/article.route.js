@@ -2,8 +2,10 @@ const express = require('express');
 const router = express.Router();
 const Article=require("../models/article")
 const Scategorie =require("../models/scategorie")
+const {verifyToken} =require("../middeleware/verify-token");
+
 // afficher la liste des articles.
-router.get('/', async (req, res, )=> {
+router.get('/',verifyToken, async (req, res, )=> {
 try {
 const articles = await Article.find({}, null, {sort: {'_id': -
 1}}).populate("scategorieID").exec();
@@ -118,7 +120,6 @@ router.get('/art/pagination', async(req, res) => {
   // Send the paginated products and total pages as the API response
   res.json({ products: paginatedProducts, totalPages });
   });
-
 
 
 
