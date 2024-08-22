@@ -3,6 +3,7 @@ const router = express.Router();
 // Créer une instance de categorie.
 const Categorie = require('../models/categorie');
 const { verifyToken } = require('../middeleware/verify-token');
+const { authorizeRoles } = require('../middeleware/authorizeRoles');
 // afficher la liste des categories.
 router.get('/',verifyToken, async (req, res, )=> {
     try {
@@ -15,7 +16,7 @@ router.get('/',verifyToken, async (req, res, )=> {
 });
 // créer un nouvelle catégorie
 
-router.post('/', async (req, res) => {
+router.post('/',verifyToken,authorizeRoles("admin","user"), async (req, res) => {
     const { nomcategorie, imagecategorie} = req.body;
     const postCategorie = new Categorie({nomcategorie:nomcategorie,
     imagecategorie:imagecategorie})

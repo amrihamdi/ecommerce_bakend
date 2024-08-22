@@ -3,6 +3,19 @@ const router = express.Router();
 const User=require("../models/user")
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
+const {verifyToken} =require("../middeleware/verify-token")
+const nodemailer=require('nodemailer');
+var transporter =nodemailer.createTransport({
+    service:'gmail',
+    auth:{
+    user:'hamdiamri53@gmail.com',
+    pass:'gbix wopw lxdm lmbz'
+    },
+    tls:{
+    rejectUnauthorized:false
+    }
+})
+
 
 // créer un nouvel utilisateur
 router.post('/register', async (req, res) => {
@@ -15,6 +28,24 @@ router.post('/register', async (req, res) => {
     
     const newUser = new User({ email, password, firstname, lastname })
     const createdUser = await newUser.save()
+    // Envoyer l'e-mail de confirmation de l'inscription
+var mailOption ={
+    from: '"verify your email " <esps421@gmail.com>',
+    to: newUser.email,
+    subject: 'vérification your email ',
+    html:`<h2>${newUser.firstname}! thank you for registreting on our website</h2>
+    <h4>please verify your email to procced.. </h4>
+    <a href="http://${req.headers.host}/api/users/status/edit?email=${newUser.email}">click here</a>`
+    }
+    transporter.sendMail(mailOption,function(error,info){
+    if(error){
+    console.log(error)
+    }
+    else{
+    console.log('verification email sent to your gmail account ')
+    }
+    })
+    
     return res.status(201).send({ success: true, message: "Account created successfully", user: createdUser })
     } catch (err) {
     console.log(err)
@@ -91,5 +122,19 @@ return res.status(404).send({ success: false, message: err.message
 }
 
 });
+
+router.get('/status/edit/', async (req, res) => {
+try {
+let email = req.query.email
+console.log(email)
+let user = await User.findOne({email})
+user.isActive = !user.isActive
+user.save()
+res.status(200).send({ success: true, user })
+} catch (err) {
+return res.status(404).send({ success: false, message: err })
+}
+})
+module.exports = router;
 
     module.exports = router;
